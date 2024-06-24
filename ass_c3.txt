@@ -1,0 +1,175 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.Your MySQL connection id is 21
+Server version: 8.0.36 MySQL Community Server - GPL
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates. Other names may be trademarks of their respective owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> use ass_c;
+Database changed
+mysql> create table student1
+    -> (
+    -> sno int(10),
+    -> name varchar(10),
+    -> sub1 int(3),
+    -> sub2 int(3),
+    -> sub3 int(3),
+    -> total int(3),
+    -> percentage float(5,2)
+    -> );
+Query OK, 0 rows affected, 6 warnings (0.03 sec)
+
+mysql> create table student_pass
+    -> (
+    -> sno int(10),
+    -> name varchar(10),
+    -> sub1 int(3),
+    -> sub2 int(3),
+    -> sub3 int(3),
+    -> total int(3),
+    -> percentage float(5,2)
+    -> );
+Query OK, 0 rows affected, 6 warnings (0.10 sec)
+mysql> create table student_fail
+    -> (
+    -> sno int(10),
+    -> name varchar(10),
+    -> sub1 int(3),
+    -> sub2 int(3),
+    -> sub3 int(3),
+    -> total int(3),
+    -> percentage float(5,2)
+    -> );
+Query OK, 0 rows affected, 6 warnings (0.10 sec)
+
+mysql> create table student_first
+    -> (
+    -> sno int(10),
+    -> name varchar(10),
+    -> sub1 int(3),
+    -> sub2 int(3),
+    -> sub3 int(3),
+    -> total int(3),
+    -> percentage float(5,2)
+    -> );
+Query OK, 0 rows affected, 6 warnings (0.12 sec)
+
+mysql> insert into student1 values
+    ->     (1,'rohit',90,99,98,NULL,NULL),
+    ->      (2,'amit',66,44,77,NULL,NULL),
+    ->      (3,'shubh',50,60,70,NULL,NULL),
+    ->      (4,'raghav',90,99,92,NULL,NULL),
+    ->      (5,'sam',52,62,57,NULL,NULL),
+    ->      (6,'roy',65,45,75,NULL,NULL),
+    ->      (7,'jit',52,60,50,NULL,NULL),
+    ->      (8,'abhi',27,16,35,NULL,NULL),
+    ->      (9,'jay',50,50,50,NULL,NULL),
+    ->      (10,'viki',60,40,70,NULL,NULL);
+Query OK, 10 rows affected (0.08 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from student1;
++------+--------+------+------+------+-------+------------+
+| sno  | name   | sub1 | sub2 | sub3 | total | percentage |
++------+--------+------+------+------+-------+------------+
+|    1 | rohit  |   90 |   99 |   98 |  NULL |       NULL |
+|    2 | amit   |   66 |   44 |   77 |  NULL |       NULL |
+|    3 | shubh  |   50 |   60 |   70 |  NULL |       NULL |
+|    4 | raghav |   90 |   99 |   92 |  NULL |       NULL |
+|    5 | sam    |   52 |   62 |   57 |  NULL |       NULL |
+|    6 | roy    |   65 |   45 |   75 |  NULL |       NULL |
+|    7 | jit    |   52 |   60 |   50 |  NULL |       NULL |
+|    8 | abhi   |   27 |   16 |   35 |  NULL |       NULL |
+|    9 | jay    |   50 |   50 |   50 |  NULL |       NULL |
+|   10 | viki   |   60 |   40 |   70 |  NULL |       NULL |
++------+--------+------+------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from student_pass;
+Empty set (0.00 sec)
+
+mysql> select * from student_fail;
+Empty set (0.00 sec)
+
+mysql> select * from student_first;
+Empty set (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure calgrade()
+    ->  begin
+    ->  declare s1,s2,s3,tot int(3);
+    ->  declare id int(10);
+    ->  declare per float(5,2);
+    ->  declare sname varchar(10);
+    ->  declare i,cnt int(3);
+    ->  DECLARE stu_cur CURSOR FOR select sno,name,sub1,sub2,sub3 from student1;
+    ->  SET i=0;
+    ->  select count(*) into cnt from student1;
+    ->  OPEN stu_cur;
+    ->  REPEAT
+    ->  FETCH stu_cur INTO id,sname,s1,s2,s3;
+    ->  SET tot=(s1+s2+s3);
+    ->  SET per=(tot/3);
+    ->  IF per >= 60 THEN
+    ->  insert into student_first values (id,sname,s1,s2,s3,tot,per);
+    ->  ELSEIF per<60 and per>=50 THEN
+    ->  insert into student_pass values (id,sname,s1,s2,s3,tot,per);
+    ->  ELSE
+    ->  insert into student_fail values (id,sname,s1,s2,s3,tot,per);
+    ->  END IF;
+    ->  update student1 set total=tot,percentage=per where sno=id;
+    ->  SET i=i+1;
+    ->  UNTIL i>=cnt END REPEAT;
+    ->  CLOSE stu_cur;
+    -> end //
+Query OK, 0 rows affected, 4 warnings (0.08 sec)
+
+mysql> call calgrade() //
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from student1 //
++------+--------+------+------+------+-------+------------+
+| sno  | name   | sub1 | sub2 | sub3 | total | percentage |
++------+--------+------+------+------+-------+------------+
+|    1 | rohit  |   90 |   99 |   98 |   287 |      95.67 |
+|    2 | amit   |   66 |   44 |   77 |   187 |      62.33 |
+|    3 | shubh  |   50 |   60 |   70 |   180 |      60.00 |
+|    4 | raghav |   90 |   99 |   92 |   281 |      93.67 |
+|    5 | sam    |   52 |   62 |   57 |   171 |      57.00 |
+|    6 | roy    |   65 |   45 |   75 |   185 |      61.67 |
+|    7 | jit    |   52 |   60 |   50 |   162 |      54.00 |
+|    8 | abhi   |   27 |   16 |   35 |    78 |      26.00 |
+|    9 | jay    |   50 |   50 |   50 |   150 |      50.00 |
+|   10 | viki   |   60 |   40 |   70 |   170 |      56.67 |
++------+--------+------+------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from student_pass//
++------+------+------+------+------+-------+------------+
+| sno  | name | sub1 | sub2 | sub3 | total | percentage |
++------+------+------+------+------+-------+------------+
+|    5 | sam  |   52 |   62 |   57 |   171 |      57.00 |
+|    7 | jit  |   52 |   60 |   50 |   162 |      54.00 |
+|    9 | jay  |   50 |   50 |   50 |   150 |      50.00 |
+|   10 | viki |   60 |   40 |   70 |   170 |      56.67 |
++------+------+------+------+------+-------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student_fail//
++------+------+------+------+------+-------+------------+
+| sno  | name | sub1 | sub2 | sub3 | total | percentage |
++------+------+------+------+------+-------+------------+
+|    8 | abhi |   27 |   16 |   35 |    78 |      26.00 |
++------+------+------+------+------+-------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from student_first//
++------+--------+------+------+------+-------+------------+
+| sno  | name   | sub1 | sub2 | sub3 | total | percentage |
++------+--------+------+------+------+-------+------------+
+|    1 | rohit  |   90 |   99 |   98 |   287 |      95.67 |
+|    2 | amit   |   66 |   44 |   77 |   187 |      62.33 |
+|    3 | shubh  |   50 |   60 |   70 |   180 |      60.00 |
+|    4 | raghav |   90 |   99 |   92 |   281 |      93.67 |
+|    6 | roy    |   65 |   45 |   75 |   185 |      61.67 |
++------+--------+------+------+------+-------+------------+
+5 rows in set (0.00 sec)

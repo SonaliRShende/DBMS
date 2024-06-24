@@ -1,0 +1,228 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g. Your MySQL connection id is 16
+Server version: 8.0.36 MySQL Community Server - GPL
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates. Other names may be trademarks of their respective owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database ass_c;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> use ass_c;
+Database changed
+mysql> create table student
+    -> (
+    -> sno int(10),
+    -> name varchar(10),
+    -> sub1 int(3),
+    -> sub2 int(3),
+    -> sub3 int(3),
+    -> total int(3),
+    -> percentage float(5,2),
+    -> grade varchar(20)
+    -> );
+Query OK, 0 rows affected, 6 warnings (0.10 sec)
+
+mysql> desc student;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| sno        | int         | YES  |     | NULL    |       |
+| name       | varchar(10) | YES  |     | NULL    |       |
+| sub1       | int         | YES  |     | NULL    |       |
+| sub2       | int         | YES  |     | NULL    |       |
+| sub3       | int         | YES  |     | NULL    |       |
+| total      | int         | YES  |     | NULL    |       |
+| percentage | float(5,2)  | YES  |     | NULL    |       |
+| grade      | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> insert into student values
+    -> (1,'rohit',90,99,98,NULL,NULL,NULL),
+    -> (2,'amit',66,44,77,NULL,NULL,NULL),
+    -> (3,'shubh',50,60,70,NULL,NULL,NULL),
+    -> (4,'raghav',90,99,92,NULL,NULL,NULL),
+    -> (5,'sam',52,62,57,NULL,NULL,NULL),
+    -> (6,'roy',65,45,75,NULL,NULL,NULL),
+    -> (7,'jit',52,60,50,NULL,NULL,NULL),
+    -> (8,'abhi',27,16,35,NULL,NULL,NULL),
+    -> (9,'jay',50,50,50,NULL,NULL,NULL),
+    -> (10,'viki',60,40,70,NULL,NULL,NULL);
+Query OK, 10 rows affected (0.08 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++------+--------+------+------+------+-------+------------+-------+
+| sno  | name   | sub1 | sub2 | sub3 | total | percentage | grade |
++------+--------+------+------+------+-------+------------+-------+
+|    1 | rohit  |   90 |   99 |   98 |  NULL |       NULL | NULL  |
+|    2 | amit   |   66 |   44 |   77 |  NULL |       NULL | NULL  |
+|    3 | shubh  |   50 |   60 |   70 |  NULL |       NULL | NULL  |
+|    4 | raghav |   90 |   99 |   92 |  NULL |       NULL | NULL  |
+|    5 | sam    |   52 |   62 |   57 |  NULL |       NULL | NULL  |
+|    6 | roy    |   65 |   45 |   75 |  NULL |       NULL | NULL  |
+|    7 | jit    |   52 |   60 |   50 |  NULL |       NULL | NULL  |
+|    8 | abhi   |   27 |   16 |   35 |  NULL |       NULL | NULL  |
+|    9 | jay    |   50 |   50 |   50 |  NULL |       NULL | NULL  |
+|   10 | viki   |   60 |   40 |   70 |  NULL |       NULL | NULL  |
++------+--------+------+------+------+-------+------------+-------+
+10 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure calpercentage()
+    ->  begin
+    ->  declare s1,s2,s3,tot int(3);
+    ->  declare per float(5,2);
+    ->  declare grde varchar(20);
+    ->  declare i,cnt,id int(10);
+    ->  SET i=0;
+    ->  select count(*) into cnt from student;
+    ->  while i<=cnt do
+    ->  select sno,sub1,sub2,sub3 into id,s1,s2,s3 from student limit i,1;
+    ->  SET tot=(s1+s2+s3);
+    ->  SET per=tot/3;
+    ->  if per>=40 then
+    ->  SET grde='PASS';
+    ->  else
+    ->  SET grde='FAIL';
+    ->  end If;
+    ->  SELECT tot,per,grde;
+    ->  update student SET total=tot,percentage=per,grade=grde where sno=id;
+
+    ->  SET i=i+1;
+    ->  end while;
+    -> end //
+Query OK, 0 rows affected, 3 warnings (0.09 sec)
+
+mysql> call calpercentage();
+    -> //
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  287 | 95.67 | PASS |
++------+-------+------+
+1 row in set (0.08 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  187 | 62.33 | PASS |
++------+-------+------+
+1 row in set (0.09 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  180 | 60.00 | PASS |
++------+-------+------+
+1 row in set (0.09 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  281 | 93.67 | PASS |
++------+-------+------+
+1 row in set (0.09 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  171 | 57.00 | PASS |
++------+-------+------+
+1 row in set (0.09 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  185 | 61.67 | PASS |
++------+-------+------+
+1 row in set (0.10 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  162 | 54.00 | PASS |
++------+-------+------+
+1 row in set (0.10 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|   78 | 26.00 | FAIL |
++------+-------+------+
+1 row in set (0.10 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  150 | 50.00 | PASS |
++------+-------+------+
+1 row in set (0.10 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  170 | 56.67 | PASS |
++------+-------+------+
+1 row in set (0.11 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  170 | 56.67 | PASS |
++------+-------+------+
+1 row in set (0.11 sec)
+
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> select * from student //
++------+--------+------+------+------+-------+------------+-------+
+| sno  | name   | sub1 | sub2 | sub3 | total | percentage | grade |
++------+--------+------+------+------+-------+------------+-------+
+|    1 | rohit  |   90 |   99 |   98 |   287 |      95.67 | PASS  |
+|    2 | amit   |   66 |   44 |   77 |   187 |      62.33 | PASS  |
+|    3 | shubh  |   50 |   60 |   70 |   180 |      60.00 | PASS  |
+|    4 | raghav |   90 |   99 |   92 |   281 |      93.67 | PASS  |
+|    5 | sam    |   52 |   62 |   57 |   171 |      57.00 | PASS  |
+|    6 | roy    |   65 |   45 |   75 |   185 |      61.67 | PASS  |
+|    7 | jit    |   52 |   60 |   50 |   162 |      54.00 | PASS  |
+|    8 | abhi   |   27 |   16 |   35 |    78 |      26.00 | FAIL  |
+|    9 | jay    |   50 |   50 |   50 |   150 |      50.00 | PASS  |
+|   10 | viki   |   60 |   40 |   70 |   170 |      56.67 | PASS  |
++------+--------+------+------+------+-------+------------+-------+
+10 rows in set (0.00 sec)
+
+mysql>
+mysql> create function gross(basic int(10))
+    ->  returns float
+    ->  begin
+    ->  declare grsal,hra,da,ta float;
+    ->  set hra=0.5*basic;
+    ->  set da=basic;
+    ->  set ta=0.2*(basic+hra);
+    ->  set grsal=basic+hra+da+ta;
+    ->  return grsal;
+    -> end //
+ERROR 1418 (HY000): This function has none of DETERMINISTIC, NO SQL, or READS SQL DATA in its declaration and binary logging is enabled (you *might* want to use the less safe log_bin_trust_function_creators variable)
+mysql> create function gross(basic int(10))
+    ->  returns float
+    ->   DETERMINISTIC
+    ->  begin
+    ->  declare grsal,hra,da,ta float;
+    ->  set hra=0.5*basic;
+    ->  set da=basic;
+    ->  set ta=0.2*(basic+hra);
+    ->  set grsal=basic+hra+da+ta;
+    ->  return grsal;
+    -> end //
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> select gross (100);
+    -> //
++-------------+
+| gross (100) |
++-------------+
+|         280 |
++-------------+
+1 row in set (0.00 sec)
