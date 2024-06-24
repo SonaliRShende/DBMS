@@ -1,0 +1,216 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.Your MySQL connection id is 13
+Server version: 8.0.36 MySQL Community Server - GPL
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database ass_b;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> use ass_b;
+Database changed
+mysql> create table EMP
+    -> (EMPNO int(10),
+    -> ENAME varchar(20),
+    -> JOB char(20),
+    -> MGR int(10),
+    -> HIREDATE date,
+    -> SAL int(20),
+    -> COMM int(10),
+    -> DEPTNO int(10));
+Query OK, 0 rows affected, 5 warnings (0.03 sec)
+
+mysql> insert into EMP values ('7369','Smith','Clerk','7902','1980-12-17','800',NULL,'20'),
+    -> ('7499','Allen', 'Salesman','7698','1981-02-20','1600','300','30'),
+    -> ('7521','Ward',  'Salesman','7698','1981-02-22','1250','500','30'),
+    -> ('7566','Jones', 'Manager','7839','1981-04-02','2975',NULL,'20'),
+    -> ('7654','Martin','Salesman','7698','1981-09-28','1250','1400','30'),
+    -> ('7698','Blake', 'Manager','7838','1981-05-01','2850',NULL,'30'),
+    -> ('7782','Clark', 'Manager','7838','1981-06-09','2450',NULL,'10'),
+    -> ('7788','Scott', 'Analyst','7566','1982-12-09','3000',NULL,'20'),
+    -> ('7839','King',  'President',NULL,'1981-11-17','5000',NULL,'10'),
+    -> ('7844','Turner','Salesman','7698','1981-09-08','1500','0','30'),
+    -> ('7876','Adams', 'Clerk','7788','1983-01-12','1100',NULL,'20'),
+    -> ('7900','James','Clerk','7698','1981-12-03','950',NULL,'30'),
+    -> ('7902','Ford','Analyst','7566','1981-12-04','3000',NULL,'20'),
+    -> ('7934','Miller','Clerk','7782','1982-1-23','1300',NULL,'10');
+Query OK, 14 rows affected (0.08 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> select * from EMP;
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | Smith  | Clerk     | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7499 | Allen  | Salesman  | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+|  7521 | Ward   | Salesman  | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7566 | Jones  | Manager   | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+|  7654 | Martin | Salesman  | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+|  7698 | Blake  | Manager   | 7838 | 1981-05-01 | 2850 | NULL |     30 |
+|  7782 | Clark  | Manager   | 7838 | 1981-06-09 | 2450 | NULL |     10 |
+|  7788 | Scott  | Analyst   | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+|  7839 | King   | President | NULL | 1981-11-17 | 5000 | NULL |     10 |
+|  7844 | Turner | Salesman  | 7698 | 1981-09-08 | 1500 |    0 |     30 |
+|  7876 | Adams  | Clerk     | 7788 | 1983-01-12 | 1100 | NULL |     20 |
+|  7900 | James  | Clerk     | 7698 | 1981-12-03 |  950 | NULL |     30 |
+|  7902 | Ford   | Analyst   | 7566 | 1981-12-04 | 3000 | NULL |     20 |
+|  7934 | Miller | Clerk     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
++-------+--------+-----------+------+------------+------+------+--------+
+14 rows in set (0.00 sec)
+
+mysql> select ENAME from EMP where JOB ='Analyst' or JOB ='Salesman';
++--------+
+| ENAME  |
++--------+
+| Allen  |
+| Ward   |
+| Martin |
+| Scott  |
+| Turner |
+| Ford   |
++--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from EMP where HIREDATE <'1981-09-30';
++-------+--------+----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB      | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+----------+------+------------+------+------+--------+
+|  7369 | Smith  | Clerk    | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7499 | Allen  | Salesman | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+|  7521 | Ward   | Salesman | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7566 | Jones  | Manager  | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+|  7654 | Martin | Salesman | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+|  7698 | Blake  | Manager  | 7838 | 1981-05-01 | 2850 | NULL |     30 |
+|  7782 | Clark  | Manager  | 7838 | 1981-06-09 | 2450 | NULL |     10 |
+|  7844 | Turner | Salesman | 7698 | 1981-09-08 | 1500 |    0 |     30 |
++-------+--------+----------+------+------------+------+------+--------+
+8 rows in set (0.00 sec)
+
+mysql> select * from EMP where JOB !='Manager';
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | Smith  | Clerk     | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7499 | Allen  | Salesman  | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+|  7521 | Ward   | Salesman  | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7654 | Martin | Salesman  | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+|  7788 | Scott  | Analyst   | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+|  7839 | King   | President | NULL | 1981-11-17 | 5000 | NULL |     10 |
+|  7844 | Turner | Salesman  | 7698 | 1981-09-08 | 1500 |    0 |     30 |
+|  7876 | Adams  | Clerk     | 7788 | 1983-01-12 | 1100 | NULL |     20 |
+|  7900 | James  | Clerk     | 7698 | 1981-12-03 |  950 | NULL |     30 |
+|  7902 | Ford   | Analyst   | 7566 | 1981-12-04 | 3000 | NULL |     20 |
+|  7934 | Miller | Clerk     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
++-------+--------+-----------+------+------------+------+------+--------+
+11 rows in set (0.00 sec)
+
+mysql> select ENAME from EMP where EMPNO in(7369,7521,7839,7934,7788);
++--------+
+| ENAME  |
++--------+
+| Smith  |
+| Ward   |
+| Scott  |
+| King   |
+| Miller |
++--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from EMP where DEPTNO not in (30,40,10);
++-------+-------+---------+------+------------+------+------+--------+
+| EMPNO | ENAME | JOB     | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+-------+---------+------+------------+------+------+--------+
+|  7369 | Smith | Clerk   | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7566 | Jones | Manager | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+|  7788 | Scott | Analyst | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+|  7876 | Adams | Clerk   | 7788 | 1983-01-12 | 1100 | NULL |     20 |
+|  7902 | Ford  | Analyst | 7566 | 1981-12-04 | 3000 | NULL |     20 |
++-------+-------+---------+------+------------+------+------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select ENAME from EMP where HIREDATE between '1981-06-30' and '1981-1
+2-31';
++--------+
+| ENAME  |
++--------+
+| Martin |
+| King   |
+| Turner |
+| James  |
+| Ford   |
++--------+
+5 rows in set (0.07 sec)
+
+mysql> select distinct(JOB) from EMP;
++-----------+
+| JOB       |
++-----------+
+| Clerk     |
+| Salesman  |
+| Manager   |
+| Analyst   |
+| President |
++-----------+
+5 rows in set (0.07 sec)
+
+mysql> select ENAME from EMP where COMM is NULL;
++--------+
+| ENAME  |
++--------+
+| Smith  |
+| Jones  |
+| Blake  |
+| Clark  |
+| Scott  |
+| King   |
+| Adams  |
+| James  |
+| Ford   |
+| Miller |
++--------+
+10 rows in set (0.00 sec)
+
+mysql> select ENAME from EMP where MGR is NULL;
++-------+
+| ENAME |
++-------+
+| King  |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select ENAME from EMP where DEPTNO  is NULL;
+Empty set (0.00 sec)
+
+mysql> select ENAME from EMP where not(COMM is NULL);
++--------+
+| ENAME  |
++--------+
+| Allen  |
+| Ward   |
+| Martin |
+| Turner |
++--------+
+4 rows in set (0.00 sec)
+
+mysql> select ENAME from EMP where ENAME like 'S%' or ENAME like '%s';
++-------+
+| ENAME |
++-------+
+| Smith |
+| Jones |
+| Scott |
+| Adams |
+| James |
++-------+
+5 rows in set (0.07 sec)
+
+mysql> select ENAME from EMP where ENAME like '_i%' ;
++--------+
+| ENAME  |
++--------+
+| King   |
+| Miller |
++--------+
+2 rows in set (0.00 sec)
