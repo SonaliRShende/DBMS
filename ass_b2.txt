@@ -1,0 +1,241 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g. Your MySQL connection id is 14
+Server version: 8.0.36 MySQL Community Server - GPL
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates. Other names may be trademarks of their respective owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use ass_b;
+Database changed
+mysql> Select * from EMP;
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | Smith  | Clerk     | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7499 | Allen  | Salesman  | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+|  7521 | Ward   | Salesman  | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7566 | Jones  | Manager   | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+|  7654 | Martin | Salesman  | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+|  7698 | Blake  | Manager   | 7838 | 1981-05-01 | 2850 | NULL |     30 |
+|  7782 | Clark  | Manager   | 7838 | 1981-06-09 | 2450 | NULL |     10 |
+|  7788 | Scott  | Analyst   | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+|  7839 | King   | President | NULL | 1981-11-17 | 5000 | NULL |     10 |
+|  7844 | Turner | Salesman  | 7698 | 1981-09-08 | 1500 |    0 |     30 |
+|  7876 | Adams  | Clerk     | 7788 | 1983-01-12 | 1100 | NULL |     20 |
+|  7900 | James  | Clerk     | 7698 | 1981-12-03 |  950 | NULL |     30 |
+|  7902 | Ford   | Analyst   | 7566 | 1981-12-04 | 3000 | NULL |     20 |
+|  7934 | Miller | Clerk     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
++-------+--------+-----------+------+------------+------+------+--------+
+14 rows in set (0.00 sec)
+
+mysql> select count(*) , avg(SAL),DEPTNO from EMP where DEPTNO =20;
++----------+-----------+--------+
+| count(*) | avg(SAL)  | DEPTNO |
++----------+-----------+--------+
+|        5 | 2175.0000 |     20 |
++----------+-----------+--------+
+1 row in set (0.08 sec)
+
+mysql> select ENAME ,SAL ,((SAL*10)/100)as PF from EMP;
++--------+------+----------+
+| ENAME  | SAL  | PF       |
++--------+------+----------+
+| Smith  |  800 |  80.0000 |
+| Allen  | 1600 | 160.0000 |
+| Ward   | 1250 | 125.0000 |
+| Jones  | 2975 | 297.5000 |
+| Martin | 1250 | 125.0000 |
+| Blake  | 2850 | 285.0000 |
+| Clark  | 2450 | 245.0000 |
+| Scott  | 3000 | 300.0000 |
+| King   | 5000 | 500.0000 |
+| Turner | 1500 | 150.0000 |
+| Adams  | 1100 | 110.0000 |
+| James  |  950 |  95.0000 |
+| Ford   | 3000 | 300.0000 |
+| Miller | 1300 | 130.0000 |
++--------+------+----------+
+14 rows in set (0.08 sec)
+
+mysql> select ENAME from EMP where (1995-year(HIREDATE)>=14);
++--------+
+| ENAME  |
++--------+
+| Smith  |
+| Allen  |
+| Ward   |
+| Jones  |
+| Martin |
+| Blake  |
+| Clark  |
+| King   |
+| Turner |
+| James  |
+| Ford   |
++--------+
+11 rows in set (0.00 sec)
+
+mysql> select * from EMP order by SAL;
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | Smith  | Clerk     | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7900 | James  | Clerk     | 7698 | 1981-12-03 |  950 | NULL |     30 |
+|  7876 | Adams  | Clerk     | 7788 | 1983-01-12 | 1100 | NULL |     20 |
+|  7521 | Ward   | Salesman  | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7654 | Martin | Salesman  | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+|  7934 | Miller | Clerk     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
+|  7844 | Turner | Salesman  | 7698 | 1981-09-08 | 1500 |    0 |     30 |
+|  7499 | Allen  | Salesman  | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+|  7782 | Clark  | Manager   | 7838 | 1981-06-09 | 2450 | NULL |     10 |
+|  7698 | Blake  | Manager   | 7838 | 1981-05-01 | 2850 | NULL |     30 |
+|  7566 | Jones  | Manager   | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+|  7788 | Scott  | Analyst   | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+|  7902 | Ford   | Analyst   | 7566 | 1981-12-04 | 3000 | NULL |     20 |
+|  7839 | King   | President | NULL | 1981-11-17 | 5000 | NULL |     10 |
++-------+--------+-----------+------+------------+------+------+--------+
+14 rows in set (0.00 sec)
+
+mysql> select ENAME ,HIREDATE from EMP order by SAL desc;
++--------+------------+
+| ENAME  | HIREDATE   |
++--------+------------+
+| King   | 1981-11-17 |
+| Scott  | 1982-12-09 |
+| Ford   | 1981-12-04 |
+| Jones  | 1981-04-02 |
+| Blake  | 1981-05-01 |
+| Clark  | 1981-06-09 |
+| Allen  | 1981-02-20 |
+| Turner | 1981-09-08 |
+| Miller | 1982-01-23 |
+| Ward   | 1981-02-22 |
+| Martin | 1981-09-28 |
+| Adams  | 1983-01-12 |
+| James  | 1981-12-03 |
+| Smith  | 1980-12-17 |
++--------+------------+
+14 rows in set (0.00 sec)
+
+mysql> select ENAME, SAL, ((SAL*10)/100)as PF,((SAl*50)/100) as HRA ,((SAl*30)/100)as DA,(SAl+((SAL*10)/100)+((SAL*50)/100)+((SAl*30)/100)) as Gross from EMP order by GROSS;
++--------+------+----------+-----------+-----------+-----------+
+| ENAME  | SAL  | PF       | HRA       | DA        | Gross     |
++--------+------+----------+-----------+-----------+-----------+
+| Smith  |  800 |  80.0000 |  400.0000 |  240.0000 | 1520.0000 |
+| James  |  950 |  95.0000 |  475.0000 |  285.0000 | 1805.0000 |
+| Adams  | 1100 | 110.0000 |  550.0000 |  330.0000 | 2090.0000 |
+| Ward   | 1250 | 125.0000 |  625.0000 |  375.0000 | 2375.0000 |
+| Martin | 1250 | 125.0000 |  625.0000 |  375.0000 | 2375.0000 |
+| Miller | 1300 | 130.0000 |  650.0000 |  390.0000 | 2470.0000 |
+| Turner | 1500 | 150.0000 |  750.0000 |  450.0000 | 2850.0000 |
+| Allen  | 1600 | 160.0000 |  800.0000 |  480.0000 | 3040.0000 |
+| Clark  | 2450 | 245.0000 | 1225.0000 |  735.0000 | 4655.0000 |
+| Blake  | 2850 | 285.0000 | 1425.0000 |  855.0000 | 5415.0000 |
+| Jones  | 2975 | 297.5000 | 1487.5000 |  892.5000 | 5652.5000 |
+| Scott  | 3000 | 300.0000 | 1500.0000 |  900.0000 | 5700.0000 |
+| Ford   | 3000 | 300.0000 | 1500.0000 |  900.0000 | 5700.0000 |
+| King   | 5000 | 500.0000 | 2500.0000 | 1500.0000 | 9500.0000 |
++--------+------+----------+-----------+-----------+-----------+
+14 rows in set (0.07 sec)
+
+mysql> select count(*),DEPTNO from EMP group by DEPTNO;
++----------+--------+
+| count(*) | DEPTNO |
++----------+--------+
+|        5 |     20 |
+|        6 |     30 |
+|        3 |     10 |
++----------+--------+
+3 rows in set (0.07 sec)
+
+mysql> select DEPTNO , sum(SAL )as TOTAL_SAL_PAYABLE from EMP group by DEPTNO;
++--------+-------------------+
+| DEPTNO | TOTAL_SAL_PAYABLE |
++--------+-------------------+
+|     20 |             10875 |
+|     30 |              9400 |
+|     10 |              8750 |
++--------+-------------------+
+3 rows in set (0.00 sec)
+
+mysql> select JOB ,cout(EMPNO) as NUM_OF_EMP from EMP group by JOB order by NUM_OF_EMP desc;
+ERROR 1305 (42000): FUNCTION ass_b.cout does not exist
+mysql> select JOB ,count(EMPNO) as NUM_OF_EMP from EMP group by JOB order by NUM_OF_EMP desc;
++-----------+------------+
+| JOB       | NUM_OF_EMP |
++-----------+------------+
+| Clerk     |          4 |
+| Salesman  |          4 |
+| Manager   |          3 |
+| Analyst   |          2 |
+| President |          1 |
++-----------+------------+
+5 rows in set (0.08 sec)
+mysql> select JOB ,sum(SAL) as TOTAL,max(SAL) as MAX ,min(SAL) as MIN , avg(SAL) as AVG  from EMP group by JOB;
++-----------+-------+------+------+-----------+
+| JOB       | TOTAL | MAX  | MIN  | AVG       |
++-----------+-------+------+------+-----------+
+| Clerk     |  4150 | 1300 |  800 | 1037.5000 |
+| Salesman  |  5600 | 1600 | 1250 | 1400.0000 |
+| Manager   |  8275 | 2975 | 2450 | 2758.3333 |
+| Analyst   |  6000 | 3000 | 3000 | 3000.0000 |
+| President |  5000 | 5000 | 5000 | 5000.0000 |
++-----------+-------+------+------+-----------+
+5 rows in set (0.08 sec)
+
+mysql> select DEPTNO,sum(SAL) as TOTAL,max(SAL) as MAX ,min(SAL) as MIN , avg(SAL) as AVG  from EMP where DEPTNO = '20';
++--------+-------+------+------+-----------+
+| DEPTNO | TOTAL | MAX  | MIN  | AVG       |
++--------+-------+------+------+-----------+
+|     20 | 10875 | 3000 |  800 | 2175.0000 |
++--------+-------+------+------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select JOB ,sum(SAL) as TOTAL,max(SAL) as MAX ,min(SAL) as MIN , avg(SAL) as AVG  from EMP where DEPTNO = '20' group by JOB having avg(SAL)>1000;
++---------+-------+------+------+-----------+
+| JOB     | TOTAL | MAX  | MIN  | AVG       |
++---------+-------+------+------+-----------+
+| Manager |  2975 | 2975 | 2975 | 2975.0000 |
+| Analyst |  6000 | 3000 | 3000 | 3000.0000 |
++---------+-------+------+------+-----------+
+2 rows in set (0.07 sec)
+
+mysql> select max(SAL) from EMP where JOB = 'Salesman';
++----------+
+| max(SAL) |
++----------+
+|     1600 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from EMP ;
++----------+
+| count(*) |
++----------+
+|       14 |
++----------+
+1 row in set (0.08 sec)
+
+mysql> select count(distinct(JOB)) from EMP;
++----------------------+
+| count(distinct(JOB)) |
++----------------------+
+|                    5 |
++----------------------+
+1 row in set (0.08 sec)
+
+mysql> select sum(SAL) from EMP;
++----------+
+| sum(SAL) |
++----------+
+|    29025 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select avg(SAL),max(SAL),min(SAL) from EMP;
++-----------+----------+----------+
+| avg(SAL)  | max(SAL) | min(SAL) |
++-----------+----------+----------+
+| 2073.2143 |     5000 |      800 |
++-----------+----------+----------+
+1 row in set (0.00 sec)
